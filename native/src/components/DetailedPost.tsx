@@ -7,17 +7,16 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Markdown from 'react-native-markdown-renderer';
 
 type Props = {
-  route: RouteProp<RootStackParamList, 'Details'>;
-  navigation: StackNavigationProp<RootStackParamList, 'Details'>;
+  route?: RouteProp<RootStackParamList, 'Details'>;
 };
 
 //React Native Markdown Renderer causes warnings due to components needing to be updated.
 //In production I would go in and fix the warnings myself, but for the purpose of this test
 //it could take a 3-4 hour task and turn it into a 5 hour one. The time is better spent completing the task itself.
 
-export const DetailedPost: FC<Props> = ({ route, navigation }) => {
-  const { title } = route.params;
-  const { body } = route.params;
+export const DetailedPost: FC<Props> = ({ route }) => {
+  const { title } = route!.params;
+  const { body } = route!.params;
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
