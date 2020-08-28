@@ -1,7 +1,10 @@
 import React from 'react';
 import renderer, { act } from 'react-test-renderer';
 import { Platform } from 'react-native';
-import { App, getHeaderColorForPlatform } from './App';
+import { App, getHeaderColorForPlatform } from '../App';
+import 'isomorphic-fetch';
+
+jest.useFakeTimers()
 
 describe('<App/>', () => {
   const tree = renderer.create(<App />).toJSON();
