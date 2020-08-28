@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, FlatList, TouchableOpacity,} from 'react-native';
 import { ProfileScreenNavigationProp, Props, State,} from '../types/PostListTypes';
 
+export const sortReverseChronologically = (json: any) => {
+  json.sort(
+    (later: any, older: any) =>
+      new Date(older.publishedAt).getTime() -
+      new Date(later.publishedAt).getTime()
+  );
+  return json
+}
+
 export class PostList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -15,14 +24,37 @@ export class PostList extends React.Component<Props, State> {
 
   componentDidMount() {
     fetch('http://10.0.0.215:4000/posts')
-      .then((response) => response.json())
+      .then((response) => response.json())  
       .then((json) => {
+        json = sortReverseChronologically(json)
         this.setState({
           isLoaded: true,
           data: json,
         });
       });
   }
+
+  filterByAuthor(name: string, posts: any[]) {
+    posts = posts.filter((post) => post.author.name == name);
+    return (
+      <FlatList
+        data = {posts}
+        renderItem={({ item }) => (
+            <View style={styles.item}>
+              <Text style={{ fontWeight: 'bold' }}>
+                Author: {item.author.name}
+              </Text>
+              <Text> Title: {item.title} </Text>
+              <Text>
+                Date Published: {new Date(item.publishedAt).toDateString()}
+              </Text>
+              <Text> Summary: {item.body.split('\n', 1)} </Text>
+            </View>
+        )}
+      />
+    );
+  }
+
 
   render() {
     var { isLoaded, data, isFiltered, authorName } = this.state;
@@ -46,6 +78,7 @@ export class PostList extends React.Component<Props, State> {
             Tap Here To Return To Unfiltered List
           </Text>
         </TouchableOpacity>
+        {this.filterByAuthor(authorName, data)}
         </View>
       );
     }

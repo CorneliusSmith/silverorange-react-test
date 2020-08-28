@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PostList/> if it matches the snapshot 1`] = `
+<ActivityIndicator
+  animating={true}
+  color="#999999"
+  hidesWhenStopped={true}
+  size="small"
+/>
+`;
