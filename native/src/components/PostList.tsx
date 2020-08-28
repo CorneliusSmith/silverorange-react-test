@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, FlatList, TouchableOpacity,} from 'react-native';
-import { ProfileScreenNavigationProp, Props, State,} from '../types/PostListTypes';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import {
+  ProfileScreenNavigationProp,
+  Props,
+  State,
+} from '../types/PostListTypes';
 
 export const sortReverseChronologically = (json: any) => {
   json.sort(
@@ -8,8 +19,15 @@ export const sortReverseChronologically = (json: any) => {
       new Date(older.publishedAt).getTime() -
       new Date(later.publishedAt).getTime()
   );
-  return json
-}
+  return json;
+};
+
+export const summaryMaker = (summary: string) => {
+  if (summary) {
+    return summary.toString().replace('#', '');
+  }
+  return '';
+};
 
 export class PostList extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -24,9 +42,9 @@ export class PostList extends React.Component<Props, State> {
 
   componentDidMount() {
     fetch('http://10.0.0.215:4000/posts')
-      .then((response) => response.json())  
+      .then((response) => response.json())
       .then((json) => {
-        json = sortReverseChronologically(json)
+        json = sortReverseChronologically(json);
         this.setState({
           isLoaded: true,
           data: json,
@@ -38,20 +56,21 @@ export class PostList extends React.Component<Props, State> {
     posts = posts.filter((post) => post.author.name == name);
     return (
       <FlatList
-        data = {posts}
+        data={posts}
         renderItem={({ item }) => (
           <TouchableOpacity
-              onPress={() => this.goToDetailedPost(item.title, item.body)}
-            >
+            onPress={() => this.goToDetailedPost(item.title, item.body)}
+          >
             <View style={styles.item}>
               <Text style={{ fontWeight: 'bold' }}>
                 Author: {item.author.name}
               </Text>
               <Text> Title: {item.title} </Text>
               <Text>
-                Date Published: {new Date(item.publishedAt).toDateString()}
+                {' '}
+                Date Published: {new Date(item.publishedAt).toDateString()}{' '}
               </Text>
-              <Text> Summary: {item.body.split('\n', 1)} </Text>
+              <Text> Summary: {summaryMaker(item.body.split('\n', 1))} </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -68,7 +87,15 @@ export class PostList extends React.Component<Props, State> {
     var { isLoaded, data, isFiltered, authorName } = this.state;
 
     if (!isLoaded) {
-      return <ActivityIndicator />;
+      return (
+        <View style={styles.container}>
+          <Text style={{ fontWeight: 'bold' }}>
+            If The Activity Indictator Doesnt Go Away In 5 Secconds An Error
+            Occured Please Reload App
+          </Text>
+          <ActivityIndicator />
+        </View>
+      );
     }
 
     if (isFiltered) {
@@ -82,11 +109,11 @@ export class PostList extends React.Component<Props, State> {
               })
             }
           >
-          <Text style={{ fontWeight: 'bold' }}>
-            Tap Here To Return To Unfiltered List
-          </Text>
-        </TouchableOpacity>
-        {this.filterByAuthor(authorName, data)}
+            <Text style={{ fontWeight: 'bold' }}>
+              Tap Here To Return To Unfiltered List
+            </Text>
+          </TouchableOpacity>
+          {this.filterByAuthor(authorName, data)}
         </View>
       );
     }
@@ -119,12 +146,11 @@ export class PostList extends React.Component<Props, State> {
                 <Text>
                   Date Published: {new Date(item.publishedAt).toDateString()}
                 </Text>
-                <Text> Summary: {item.body.split('\n', 1)} </Text>
+                <Text> Summary: {summaryMaker(item.body.split('\n', 1))} </Text>
               </View>
             </TouchableOpacity>
           )}
         />
-        
       </View>
     );
   }

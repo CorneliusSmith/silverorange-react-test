@@ -11,12 +11,11 @@ const RootStack = createStackNavigator<RootStackParamList>();
 //Gets Platform Specific Header color. Darker Orange For iOS. Lighter Orange For Android.
 export const getHeaderColorForPlatform = () => {
   if (Platform.OS === 'ios') {
-    return "#f4511e";
+    return '#f4511e';
   }
-  return "#ff8159";
+  return '#ff8159';
 };
 export function App() {
-
   var headerColor = getHeaderColorForPlatform();
 
   return (

@@ -1,4 +1,4 @@
-import React,  { Component, FC } from 'react';
+import React, { Component, FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types/RootStackParamListType';
@@ -21,8 +21,8 @@ export const DetailedPost: FC<Props> = ({ route }) => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <Text style={styles.title}> {title} </Text>
-        <Markdown>{body}</Markdown> 
-    </ScrollView>
+        <Markdown>{body}</Markdown>
+      </ScrollView>
     </View>
   );
 };

@@ -1,7 +1,10 @@
 import { RootStackParamList } from './RootStackParamListType';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-export type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList,'Home'>;
+export type ProfileScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
 
 export type Props = {
   navigation?: ProfileScreenNavigationProp;
