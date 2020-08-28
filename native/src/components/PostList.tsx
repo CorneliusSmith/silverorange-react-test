@@ -40,6 +40,9 @@ export class PostList extends React.Component<Props, State> {
       <FlatList
         data = {posts}
         renderItem={({ item }) => (
+          <TouchableOpacity
+              onPress={() => this.goToDetailedPost(item.title, item.body)}
+            >
             <View style={styles.item}>
               <Text style={{ fontWeight: 'bold' }}>
                 Author: {item.author.name}
@@ -50,11 +53,16 @@ export class PostList extends React.Component<Props, State> {
               </Text>
               <Text> Summary: {item.body.split('\n', 1)} </Text>
             </View>
+          </TouchableOpacity>
         )}
       />
     );
   }
 
+  goToDetailedPost(title: string, body: string) {
+    // ! force unwraps the navigation prop since its optional to pass in for jest testing
+    this.props.navigation!.navigate('Details', { title: title, body: body });
+  }
 
   render() {
     var { isLoaded, data, isFiltered, authorName } = this.state;
@@ -91,6 +99,9 @@ export class PostList extends React.Component<Props, State> {
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => this.goToDetailedPost(item.title, item.body)}
+            >
               <View style={styles.item}>
                 <TouchableOpacity
                   onPress={() =>
@@ -110,8 +121,10 @@ export class PostList extends React.Component<Props, State> {
                 </Text>
                 <Text> Summary: {item.body.split('\n', 1)} </Text>
               </View>
+            </TouchableOpacity>
           )}
         />
+        
       </View>
     );
   }
